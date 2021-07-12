@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fireproof_riverpod/src/base_query_handler.dart';
+import 'package:fireproof_riverpod/src/models/base_query_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/kt.dart';
 
 class QueryHandler<T> extends BaseQueryHandler<T, Query<T>> {
-  QueryHandler(Query<T> query) : super(query: query);
+  QueryHandler({required Query<T> query}) : super(query: query);
 
   /// Forces a fetch of all the documents and returns a corresponding snapshot
   /// with the id `id`.

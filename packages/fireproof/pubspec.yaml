@@ -2,7 +2,7 @@ name: fireproof
 description: To be used as a common interface to deal with riverpod \
   and firestore using abstractions such as document and a handler to deal \
   with pagination etc.
-version: 0.0.3
+version: 0.0.3+1
 homepage: https://pub.dev/packages/fireproof
 
 environment:
@@ -24,3 +24,4 @@ dev_dependencies:
   pedantic:
   freezed:
   build_runner:
+  flutter_lints:

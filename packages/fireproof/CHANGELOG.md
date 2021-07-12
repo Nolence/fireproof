@@ -1,3 +1,6 @@
+## 0.0.3+1
+Updated readme with pertinent info
+
 ## 0.0.3
 New focus for project.
 

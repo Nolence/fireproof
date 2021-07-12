@@ -5,9 +5,10 @@ part 'doc.freezed.dart';
 
 typedef RestoreFunction<T> = Future<void> Function();
 
+// TODO: REMOVE
+
 /// To generate updated model code, run:
 /// flutter pub run build_runner build
-///
 @freezed
 class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
   const MaybeDoc._();

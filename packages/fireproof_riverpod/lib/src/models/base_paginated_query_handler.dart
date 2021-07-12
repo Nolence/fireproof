@@ -20,6 +20,11 @@ abstract class BasePaginatedQueryHandler<T, R extends Query<T>> {
           query: query,
         );
 
+  // TODO: There should be a super class that can hold this.
+  static bool defaultWhere<T>(DocumentSnapshot<T> doc) {
+    return true;
+  }
+
   final R query;
 
   final PaginatedQueryNotifier<T, R> _paginatedQueryNotifier;

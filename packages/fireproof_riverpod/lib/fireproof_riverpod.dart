@@ -1,7 +1,6 @@
 library fireproof_riverpod;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/models/collection_handler.dart';
+export 'src/models/paginated_collection_handler.dart';
+export 'src/models/paginated_query_handler.dart';
+export 'src/models/query_handler.dart';

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fireproof_riverpod/src/base_paginated_query_handler.dart';
+import 'package:collection/collection.dart';
+import 'package:fireproof/fireproof.dart';
+import 'package:fireproof_riverpod/src/models/base_paginated_query_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
@@ -17,7 +19,7 @@ class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
   /// if there is a cached result. If there is, it returns that result.
   @override
   late final docSnapshot =
-      FutureProvider.autoDispose.family<QueryDocumentSnapshot<T>?, String>(
+      FutureProvider.autoDispose.family<DocumentSnapshot<T>?, String>(
     (ref, id) async {
       final asyncSnapshot = ref.watch(paginatedQueryOnce);
 
@@ -32,7 +34,7 @@ class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
   /// if there is a cached result. If there is, it returns that result.
   @override
   late final docSnapshots =
-      StreamProvider.autoDispose.family<QueryDocumentSnapshot<T>?, String>(
+      StreamProvider.autoDispose.family<DocumentSnapshot<T>?, String>(
     (ref, id) async* {
       final asyncSnapshot = ref.watch(paginatedQuery);
 

@@ -1,4 +1,3 @@
-// TODO: This has to into riverpod maybe
 // extension AsyncConverter<T> on AsyncSnapshot<T> {
 //   AsyncValue<T> get toAsyncValue {
 //     if (hasError) {
