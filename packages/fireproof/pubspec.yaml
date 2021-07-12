@@ -1,0 +1,25 @@
+name: fireproof
+description: To be used as a common interface to deal with riverpod \
+  and firestore using abstractions such as document and a handler to deal \
+  with pagination etc.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  freezed_annotation:
+  cloud_firestore:
+  state_notifier:
+  rxdart:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pedantic:
+  freezed:
+  build_runner:
