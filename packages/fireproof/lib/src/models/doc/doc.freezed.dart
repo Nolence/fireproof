@@ -17,14 +17,14 @@ class _$MaybeDocTearOff {
   const _$MaybeDocTearOff();
 
   Doc<T> call<T extends Object?>(
-      {required DocumentReference<T> reference, required T data}) {
+      {required DocumentReference<T> reference, required T Function() data}) {
     return Doc<T>(
       reference: reference,
       data: data,
     );
   }
 
-  UnsavedDoc<T> unsaved<T extends Object?>({required T data}) {
+  UnsavedDoc<T> unsaved<T extends Object?>({required T Function() data}) {
     return UnsavedDoc<T>(
       data: data,
     );
@@ -36,18 +36,20 @@ const $MaybeDoc = _$MaybeDocTearOff();
 
 /// @nodoc
 mixin _$MaybeDoc<T extends Object?> {
-  T get data => throw _privateConstructorUsedError;
+  T Function() get data => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(DocumentReference<T> reference, T data) $default, {
-    required TResult Function(T data) unsaved,
+    TResult Function(DocumentReference<T> reference, T Function() data)
+        $default, {
+    required TResult Function(T Function() data) unsaved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(DocumentReference<T> reference, T data)? $default, {
-    TResult Function(T data)? unsaved,
+    TResult Function(DocumentReference<T> reference, T Function() data)?
+        $default, {
+    TResult Function(T Function() data)? unsaved,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -75,7 +77,7 @@ abstract class $MaybeDocCopyWith<T extends Object?, $Res> {
   factory $MaybeDocCopyWith(
           MaybeDoc<T> value, $Res Function(MaybeDoc<T>) then) =
       _$MaybeDocCopyWithImpl<T, $Res>;
-  $Res call({T data});
+  $Res call({T Function() data});
 }
 
 /// @nodoc
@@ -95,7 +97,7 @@ class _$MaybeDocCopyWithImpl<T extends Object?, $Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as T,
+              as T Function(),
     ));
   }
 }
@@ -106,7 +108,7 @@ abstract class $DocCopyWith<T extends Object?, $Res>
   factory $DocCopyWith(Doc<T> value, $Res Function(Doc<T>) then) =
       _$DocCopyWithImpl<T, $Res>;
   @override
-  $Res call({DocumentReference<T> reference, T data});
+  $Res call({DocumentReference<T> reference, T Function() data});
 }
 
 /// @nodoc
@@ -131,7 +133,7 @@ class _$DocCopyWithImpl<T extends Object?, $Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as T,
+              as T Function(),
     ));
   }
 }
@@ -145,7 +147,7 @@ class _$Doc<T extends Object?> extends Doc<T> with CastExtension<T> {
   @override
   final DocumentReference<T> reference;
   @override
-  final T data;
+  final T Function() data;
 
   @override
   String toString() {
@@ -177,8 +179,9 @@ class _$Doc<T extends Object?> extends Doc<T> with CastExtension<T> {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(DocumentReference<T> reference, T data) $default, {
-    required TResult Function(T data) unsaved,
+    TResult Function(DocumentReference<T> reference, T Function() data)
+        $default, {
+    required TResult Function(T Function() data) unsaved,
   }) {
     return $default(reference, data);
   }
@@ -186,8 +189,9 @@ class _$Doc<T extends Object?> extends Doc<T> with CastExtension<T> {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(DocumentReference<T> reference, T data)? $default, {
-    TResult Function(T data)? unsaved,
+    TResult Function(DocumentReference<T> reference, T Function() data)?
+        $default, {
+    TResult Function(T Function() data)? unsaved,
     required TResult orElse(),
   }) {
     if ($default != null) {
@@ -222,12 +226,13 @@ class _$Doc<T extends Object?> extends Doc<T> with CastExtension<T> {
 abstract class Doc<T extends Object?> extends MaybeDoc<T>
     implements CastExtension<T> {
   const factory Doc(
-      {required DocumentReference<T> reference, required T data}) = _$Doc<T>;
+      {required DocumentReference<T> reference,
+      required T Function() data}) = _$Doc<T>;
   const Doc._() : super._();
 
   DocumentReference<T> get reference => throw _privateConstructorUsedError;
   @override
-  T get data => throw _privateConstructorUsedError;
+  T Function() get data => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   $DocCopyWith<T, Doc<T>> get copyWith => throw _privateConstructorUsedError;
@@ -240,7 +245,7 @@ abstract class $UnsavedDocCopyWith<T extends Object?, $Res>
           UnsavedDoc<T> value, $Res Function(UnsavedDoc<T>) then) =
       _$UnsavedDocCopyWithImpl<T, $Res>;
   @override
-  $Res call({T data});
+  $Res call({T Function() data});
 }
 
 /// @nodoc
@@ -262,7 +267,7 @@ class _$UnsavedDocCopyWithImpl<T extends Object?, $Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as T,
+              as T Function(),
     ));
   }
 }
@@ -275,7 +280,7 @@ class _$UnsavedDoc<T extends Object?> extends UnsavedDoc<T>
   const _$UnsavedDoc({required this.data}) : super._();
 
   @override
-  final T data;
+  final T Function() data;
 
   @override
   String toString() {
@@ -302,8 +307,9 @@ class _$UnsavedDoc<T extends Object?> extends UnsavedDoc<T>
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(DocumentReference<T> reference, T data) $default, {
-    required TResult Function(T data) unsaved,
+    TResult Function(DocumentReference<T> reference, T Function() data)
+        $default, {
+    required TResult Function(T Function() data) unsaved,
   }) {
     return unsaved(data);
   }
@@ -311,8 +317,9 @@ class _$UnsavedDoc<T extends Object?> extends UnsavedDoc<T>
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(DocumentReference<T> reference, T data)? $default, {
-    TResult Function(T data)? unsaved,
+    TResult Function(DocumentReference<T> reference, T Function() data)?
+        $default, {
+    TResult Function(T Function() data)? unsaved,
     required TResult orElse(),
   }) {
     if (unsaved != null) {
@@ -346,11 +353,11 @@ class _$UnsavedDoc<T extends Object?> extends UnsavedDoc<T>
 
 abstract class UnsavedDoc<T extends Object?> extends MaybeDoc<T>
     implements NullableExtension<T> {
-  const factory UnsavedDoc({required T data}) = _$UnsavedDoc<T>;
+  const factory UnsavedDoc({required T Function() data}) = _$UnsavedDoc<T>;
   const UnsavedDoc._() : super._();
 
   @override
-  T get data => throw _privateConstructorUsedError;
+  T Function() get data => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   $UnsavedDocCopyWith<T, UnsavedDoc<T>> get copyWith =>

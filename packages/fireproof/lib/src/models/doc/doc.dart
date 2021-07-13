@@ -5,8 +5,6 @@ part 'doc.freezed.dart';
 
 typedef RestoreFunction<T> = Future<void> Function();
 
-// TODO: REMOVE
-
 /// To generate updated model code, run:
 /// flutter pub run build_runner build
 @freezed
@@ -16,16 +14,17 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
   @With.fromString('CastExtension<T>')
   const factory MaybeDoc({
     required DocumentReference<T> reference,
-    required T data,
+    required T Function() data,
   }) = Doc<T>;
 
   @With.fromString('NullableExtension<T>')
-  const factory MaybeDoc.unsaved({required T data}) = UnsavedDoc<T>;
+  const factory MaybeDoc.unsaved({required T Function() data}) = UnsavedDoc<T>;
 
   static Doc<R?> fromSnapshot<R extends Object?>(
-      DocumentSnapshot<R?> snapshot) {
+    DocumentSnapshot<R?> snapshot,
+  ) {
     return Doc<R?>(
-      data: snapshot.data(),
+      data: snapshot.data,
       reference: snapshot.reference,
     );
   }
@@ -35,7 +34,7 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
     assert(snapshot.exists);
 
     return Doc<R>(
-      data: snapshot.data()!,
+      data: () => snapshot.data()!,
       reference: snapshot.reference,
     );
   }
@@ -43,7 +42,7 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
   static Doc<R> fromQuerySnapshot<R extends Object?>(
       QueryDocumentSnapshot<R> snapshot) {
     return Doc<R>(
-      data: snapshot.data(),
+      data: snapshot.data,
       reference: snapshot.reference,
     );
   }
@@ -54,7 +53,7 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
         await reference.delete();
 
         return () async {
-          await reference.set(data);
+          await reference.set(data());
         };
       },
       unsaved: (_) {
@@ -69,7 +68,7 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
         await reference.set(value);
 
         return () async {
-          await reference.set(data);
+          await reference.set(data());
         };
       },
       unsaved: (_) {
@@ -87,7 +86,7 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
         );
 
         return () async {
-          await reference.set(data);
+          await reference.set(data());
         };
       },
       unsaved: (_) {
@@ -108,7 +107,7 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
 
 mixin NullableExtension<T extends Object?> on MaybeDoc<T> {
   Future<Doc<T>> commit(DocumentReference<T> reference) async {
-    await reference.set(data);
+    await reference.set(data());
 
     return Doc(
       data: data,
@@ -120,7 +119,7 @@ mixin NullableExtension<T extends Object?> on MaybeDoc<T> {
 /// This is a temp function until
 mixin CastExtension<T extends Object?> on MaybeDoc<T> {
   Doc<R> cast<R>({
-    required R data,
+    required R Function() data,
     required FromFirestore<R> fromFirestore,
     required ToFirestore<R> toFirestore,
   }) {
