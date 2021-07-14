@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/kt.dart';
 
+// TODO: testDoc should be optional
 @immutable
 class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
   CollectionHandler({
@@ -17,7 +18,8 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
         );
 
   @override
-  late final docSnapshots = StreamProvider.autoDispose.family<Doc<T?>, String>(
+  late final AutoDisposeStreamProviderFamily<Doc<T?>, String> docSnapshots =
+      StreamProvider.autoDispose.family<Doc<T?>, String>(
     (ref, id) async* {
       final _document = ref
           .watch(snapshots)
@@ -37,7 +39,8 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
   );
 
   @override
-  late final docSnapshot = FutureProvider.autoDispose.family<Doc<T?>, String>(
+  late final AutoDisposeFutureProviderFamily<Doc<T?>, String> docSnapshot =
+      FutureProvider.autoDispose.family<Doc<T?>, String>(
     (ref, id) async {
       final _document = ref
           .watch(snapshot)

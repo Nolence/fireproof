@@ -16,7 +16,8 @@ class QueryHandler<T> extends BaseQueryHandler<T, Query<T>> {
   /// Forces a fetch of all the documents and returns a corresponding snapshot
   /// with the id `id`.
   @override
-  late final docSnapshot = FutureProvider.autoDispose.family<Doc<T>, String>(
+  late final AutoDisposeFutureProviderFamily<Doc<T>, String> docSnapshot =
+      FutureProvider.autoDispose.family<Doc<T>, String>(
     (ref, id) async {
       final querySnapshot = await ref.watch(snapshot.future);
 
@@ -25,7 +26,8 @@ class QueryHandler<T> extends BaseQueryHandler<T, Query<T>> {
   );
 
   @override
-  late final docSnapshots = StreamProvider.autoDispose.family<Doc<T>, String>(
+  late final AutoDisposeStreamProviderFamily<Doc<T>, String> docSnapshots =
+      StreamProvider.autoDispose.family<Doc<T>, String>(
     (ref, id) async* {
       await for (final querySnapshot in ref.watch(snapshots.stream)) {
         yield querySnapshot.docs.singleWhere((doc) => doc.id == id);
