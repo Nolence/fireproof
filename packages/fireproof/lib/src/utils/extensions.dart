@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fireproof/src/models/doc/doc.dart';
+import 'package:fireproof/src/models/query_snap.dart';
 
-extension QuerySnapshots<T> on Iterable<QuerySnapshot<T>> {
-  Iterable<QueryDocumentSnapshot<T>> get docs {
+extension QuerySnaps<T> on Iterable<QuerySnap<T>> {
+  Iterable<Doc<T>> get docs {
     return expand((snapshot) => snapshot.docs).toList();
   }
 }

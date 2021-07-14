@@ -8,21 +8,22 @@ class PaginatedCollectionHandler<T>
     extends BasePaginatedQueryHandler<T, CollectionReference<T>> {
   PaginatedCollectionHandler({
     required CollectionReference<T> query,
+    required TestDoc<T> testDoc,
     int maxSnapshots = 10,
     int limit = 10,
   }) : super(
           query: query,
           maxSnapshots: maxSnapshots,
           limit: limit,
+          testDoc: testDoc,
         );
 
   /// This checks the cache of [PaginatedQueryOnceNotifier] to see
   /// if there is a cached result. If there is, it returns that result otherwise
   /// it returns the result of `get.doc(id)`
   @override
-  late final AutoDisposeFutureProviderFamily<DocumentSnapshot<T>, String>
-      docSnapshot =
-      FutureProvider.autoDispose.family<DocumentSnapshot<T>, String>(
+  late final AutoDisposeFutureProviderFamily<Doc<T?>, String> docSnapshot =
+      FutureProvider.autoDispose.family<Doc<T?>, String>(
     (ref, id) async {
       final asyncSnapshot = ref.watch(paginatedQueryOnce);
       final previousDoc =
@@ -32,14 +33,15 @@ class PaginatedCollectionHandler<T>
         return previousDoc;
       }
 
-      return await query.doc(id).get();
+      final documentSnapshot = await query.doc(id).get();
+
+      return MaybeDoc.fromSnapshot(documentSnapshot);
     },
   );
 
   @override
-  late final AutoDisposeStreamProviderFamily<DocumentSnapshot<T>, String>
-      docSnapshots =
-      StreamProvider.autoDispose.family<DocumentSnapshot<T>, String>(
+  late final AutoDisposeStreamProviderFamily<Doc<T?>, String> docSnapshots =
+      StreamProvider.autoDispose.family<Doc<T?>, String>(
     (ref, id) async* {
       final asyncSnapshot = ref.watch(paginatedQuery);
       final previousDoc =
@@ -49,7 +51,9 @@ class PaginatedCollectionHandler<T>
         yield previousDoc;
       }
 
-      yield* query.doc(id).snapshots();
+      yield* query.doc(id).snapshots().map((documentSnapshot) {
+        return MaybeDoc.fromSnapshot(documentSnapshot);
+      });
     },
   );
 }

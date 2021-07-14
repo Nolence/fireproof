@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fireproof/fireproof.dart';
 import 'package:fireproof/src/paginated_query/base_paginated_query_notifier.dart';
 import 'package:flutter/material.dart';
 
@@ -10,10 +11,12 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
     required R query,
     required int maxSnapshots,
     required int limit,
+    required TestDoc<T> testDoc,
   }) : super(
           query: query,
           maxSnapshots: maxSnapshots,
           limit: limit,
+          testDoc: testDoc,
         );
 
   DocumentSnapshot<T>? _lastDocumentSnapshot;
@@ -36,9 +39,13 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
 
     if (mounted) {
       final data = state.data;
-      var querySnapshots = data == null ? <QuerySnapshot<T>>[] : [...data];
+      var querySnapshots = data == null ? <QuerySnap<T>>[] : [...data];
+      final querySnap = QuerySnap.fromSnapshot(
+        snapshot: querySnapshot,
+        testDoc: testDoc,
+      );
 
-      querySnapshots.add(querySnapshot);
+      querySnapshots.add(querySnap);
 
       if (data != null && querySnapshots.length >= maxSnapshots) {
         querySnapshots = [...querySnapshots].sublist(1);
@@ -70,9 +77,13 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
 
     if (mounted) {
       final data = state.data;
-      var querySnapshots = data == null ? <QuerySnapshot<T>>[] : [...data];
+      var querySnapshots = data == null ? <QuerySnap<T>>[] : [...data];
+      final querySnap = QuerySnap.fromSnapshot(
+        snapshot: querySnapshot,
+        testDoc: testDoc,
+      );
 
-      querySnapshots.insert(0, querySnapshot);
+      querySnapshots.insert(0, querySnap);
 
       if (querySnapshots.length >= maxSnapshots) {
         querySnapshots = [...querySnapshots]..removeLast();

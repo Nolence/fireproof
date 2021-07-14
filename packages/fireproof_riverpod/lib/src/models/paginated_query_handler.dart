@@ -7,19 +7,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
   PaginatedQueryHandler({
     required Query<T> query,
+    required TestDoc<T> testDoc,
     int maxSnapshots = 10,
     int limit = 10,
   }) : super(
           query: query,
           maxSnapshots: maxSnapshots,
           limit: limit,
+          testDoc: testDoc,
         );
 
   /// This checks the cache of [PaginatedQueryOnceNotifier] to see
   /// if there is a cached result. If there is, it returns that result.
   @override
-  late final docSnapshot =
-      FutureProvider.autoDispose.family<DocumentSnapshot<T>?, String>(
+  late final docSnapshot = FutureProvider.autoDispose.family<Doc<T>?, String>(
     (ref, id) async {
       final asyncSnapshot = ref.watch(paginatedQueryOnce);
 
@@ -33,8 +34,7 @@ class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
   /// This checks the cache of [PaginatedQueryNotifier] to see
   /// if there is a cached result. If there is, it returns that result.
   @override
-  late final docSnapshots =
-      StreamProvider.autoDispose.family<DocumentSnapshot<T>?, String>(
+  late final docSnapshots = StreamProvider.autoDispose.family<Doc<T>?, String>(
     (ref, id) async* {
       final asyncSnapshot = ref.watch(paginatedQuery);
 

@@ -1,33 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fireproof/fireproof.dart';
+import 'package:fireproof_riverpod/src/models/base_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/kt.dart';
 
 @immutable
-abstract class BaseQueryHandler<T, R extends Query<T>> {
+abstract class BaseQueryHandler<T, R extends Query<T>>
+    implements BaseHandler<T, R> {
   BaseQueryHandler({
     required this.query,
+    required this.testDoc,
   });
 
+  @override
   final R query;
 
-  late final snapshot = FutureProvider.autoDispose<QuerySnapshot<T>>(
+  @override
+  final TestDoc<T> testDoc;
+
+  late final snapshot = FutureProvider.autoDispose<QuerySnap<T>>(
     (ref) async {
-      return await query.get();
+      final _snapshot = await query.get();
+
+      return QuerySnap.fromSnapshot(
+        snapshot: _snapshot,
+        testDoc: testDoc,
+      );
     },
   );
 
-  late final snapshots = StreamProvider.autoDispose<QuerySnapshot<T>>((ref) {
-    return query.snapshots();
+  late final snapshots = StreamProvider.autoDispose<QuerySnap<T>>((ref) {
+    return query.snapshots().map(
+      (_snapshot) {
+        return QuerySnap.fromSnapshot(snapshot: _snapshot, testDoc: testDoc);
+      },
+    );
   });
 
-  AutoDisposeFutureProviderFamily<DocumentSnapshot<T>, String> get docSnapshot;
+  AutoDisposeFutureProviderFamily<Iterable<Doc<T>>, KtList<String>>
+      get docsInSnapshot;
 
-  AutoDisposeStreamProviderFamily<DocumentSnapshot<T>, String> get docSnapshots;
-
-  AutoDisposeFutureProviderFamily<Iterable<QueryDocumentSnapshot<T>>,
-      KtList<String>> get docsInSnapshot;
-
-  AutoDisposeStreamProviderFamily<Iterable<QueryDocumentSnapshot<T>>,
-      KtList<String>> get docsInSnapshots;
+  AutoDisposeStreamProviderFamily<Iterable<Doc<T>>, KtList<String>>
+      get docsInSnapshots;
 }

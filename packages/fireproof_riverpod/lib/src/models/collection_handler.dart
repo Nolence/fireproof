@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:fireproof/fireproof.dart';
 import 'package:fireproof_riverpod/src/models/base_query_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,12 +8,16 @@ import 'package:kt_dart/kt.dart';
 
 @immutable
 class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
-  CollectionHandler({required CollectionReference<T> query})
-      : super(query: query);
+  CollectionHandler({
+    required CollectionReference<T> query,
+    required TestDoc<T> testDoc,
+  }) : super(
+          query: query,
+          testDoc: testDoc,
+        );
 
   @override
-  late final docSnapshots =
-      StreamProvider.autoDispose.family<DocumentSnapshot<T>, String>(
+  late final docSnapshots = StreamProvider.autoDispose.family<Doc<T?>, String>(
     (ref, id) async* {
       final _document = ref
           .watch(snapshots)
@@ -25,13 +30,14 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
         yield _document;
       }
 
-      yield* query.doc(id).snapshots();
+      yield* query.doc(id).snapshots().map((documentSnapshot) {
+        return MaybeDoc.fromSnapshot(documentSnapshot);
+      });
     },
   );
 
   @override
-  late final docSnapshot =
-      FutureProvider.autoDispose.family<DocumentSnapshot<T>, String>(
+  late final docSnapshot = FutureProvider.autoDispose.family<Doc<T?>, String>(
     (ref, id) async {
       final _document = ref
           .watch(snapshot)
@@ -44,13 +50,15 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
         return _document;
       }
 
-      return await query.doc(id).get();
+      final documentSnapshot = await query.doc(id).get();
+
+      return MaybeDoc.fromSnapshot(documentSnapshot);
     },
   );
 
   @override
-  late final docsInSnapshot = FutureProvider.autoDispose
-      .family<Iterable<QueryDocumentSnapshot<T>>, KtList<String>>(
+  late final docsInSnapshot =
+      FutureProvider.autoDispose.family<Iterable<Doc<T>>, KtList<String>>(
     (ref, ids) async {
       throw UnimplementedError();
       // final querySnapshot = await ref.watch(snapshot.future);
@@ -60,8 +68,8 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
   );
 
   @override
-  late final docsInSnapshots = StreamProvider.autoDispose
-      .family<Iterable<QueryDocumentSnapshot<T>>, KtList<String>>(
+  late final docsInSnapshots =
+      StreamProvider.autoDispose.family<Iterable<Doc<T>>, KtList<String>>(
     (ref, ids) async* {
       throw UnimplementedError();
       // await for (final querySnapshot in ref.watch(snapshots.stream)) {

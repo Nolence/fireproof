@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fireproof/fireproof.dart';
 import 'package:fireproof/src/paginated_query/base_paginated_query_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,24 +12,26 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     required R query,
     required int maxSnapshots,
     required int limit,
+    required TestDoc<T> testDoc,
   }) : super(
           query: query,
           maxSnapshots: maxSnapshots,
           limit: limit,
+          testDoc: testDoc,
         );
 
-  var _querySnapshotStreams = <Stream<QuerySnapshot<T>>>[];
+  var _querySnapshotStreams = <Stream<QuerySnap<T>>>[];
 
   DocumentSnapshot<T>? _lastDocumentSnapshot;
 
   StreamSubscription<QuerySnapshot<T>>? _lastDocumentSubscription;
 
-  StreamSubscription<Iterable<QuerySnapshot<T>>>? _subscription;
+  StreamSubscription<Iterable<QuerySnap<T>>>? _subscription;
 
-  Stream<Iterable<QuerySnapshot<T>>> get _querySnapshotsStream {
+  Stream<Iterable<QuerySnap<T>>> get _querySnapshotsStream {
     return CombineLatestStream(
       _querySnapshotStreams,
-      (List<QuerySnapshot<T>> streamList) {
+      (List<QuerySnap<T>> streamList) {
         return streamList;
       },
     );
@@ -56,7 +59,7 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     );
   }
 
-  void _handleStateChanges(Iterable<QuerySnapshot<T>> snapshots) {
+  void _handleStateChanges(Iterable<QuerySnap<T>> snapshots) {
     state = AsyncSnapshot.withData(ConnectionState.done, snapshots);
   }
 
@@ -83,7 +86,11 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
       _querySnapshotStreams = _querySnapshotStreams.sublist(1);
     }
 
-    _querySnapshotStreams = [..._querySnapshotStreams, stream];
+    final snapStream = stream.map((snapshot) {
+      return QuerySnap.fromSnapshot(snapshot: snapshot, testDoc: testDoc);
+    });
+
+    _querySnapshotStreams = [..._querySnapshotStreams, snapStream];
     _updateSubscription();
   }
 
@@ -111,7 +118,11 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
       _querySnapshotStreams = [..._querySnapshotStreams]..removeLast();
     }
 
-    _querySnapshotStreams = [stream, ..._querySnapshotStreams];
+    final snapStream = stream.map((snapshot) {
+      return QuerySnap.fromSnapshot(snapshot: snapshot, testDoc: testDoc);
+    });
+
+    _querySnapshotStreams = [snapStream, ..._querySnapshotStreams];
     _updateSubscription();
   }
 }
