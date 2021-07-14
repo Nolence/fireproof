@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fireproof/fireproof.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @immutable
@@ -18,7 +19,7 @@ abstract class BaseHandler<T, R extends Query<T>> {
   TestDoc<T> get testDoc;
 
   /// The default is to just pass through all docs.
-  static bool defaultTest<T>(Doc<T> doc) {
+  static bool defaultTest(Doc doc) {
     return true;
   }
 
