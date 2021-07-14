@@ -21,7 +21,7 @@ abstract class BasePaginatedQueryNotifier<T, R extends Query<T>>
 
   final int limit;
 
-  void nextPage();
+  Future<void> nextPage();
 
-  void previousPage();
+  Future<void> previousPage();
 }

@@ -64,7 +64,8 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
   }
 
   @override
-  void nextPage() {
+  Future<void> nextPage() {
+    final completer = Completer();
     if (state.connectionState == ConnectionState.waiting) {
       assert(false, 'We should not fetch more pages while loading.');
     }
@@ -78,9 +79,15 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     final stream = _query.snapshots();
 
     _lastDocumentSubscription?.cancel();
-    _lastDocumentSubscription = stream.listen((QuerySnapshot<T> snapshot) {
-      _lastDocumentSnapshot = snapshot.docs.last;
-    });
+    _lastDocumentSubscription = stream.listen(
+      (QuerySnapshot<T> snapshot) {
+        completer.complete();
+        _lastDocumentSnapshot = snapshot.docs.last;
+      },
+      onError: (error, stackTrace) {
+        return completer.completeError(error, stackTrace);
+      },
+    );
 
     if (_querySnapshotStreams.length >= maxSnapshots) {
       _querySnapshotStreams = _querySnapshotStreams.sublist(1);
@@ -92,10 +99,13 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
 
     _querySnapshotStreams = [..._querySnapshotStreams, snapStream];
     _updateSubscription();
+
+    return completer.future;
   }
 
   @override
-  void previousPage() {
+  Future<void> previousPage() {
+    final completer = Completer();
     if (state.connectionState == ConnectionState.waiting) {
       assert(false, 'We should not fetch more pages while loading.');
     }
@@ -110,9 +120,15 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
 
     _lastDocumentSubscription?.cancel();
     // TODO: Is this really .first
-    _lastDocumentSubscription = stream.listen((QuerySnapshot<T> snapshot) {
-      _lastDocumentSnapshot = snapshot.docs.first;
-    });
+    _lastDocumentSubscription = stream.listen(
+      (QuerySnapshot<T> snapshot) {
+        completer.complete();
+        _lastDocumentSnapshot = snapshot.docs.first;
+      },
+      onError: (error, stackTrace) {
+        return completer.completeError(error, stackTrace);
+      },
+    );
 
     if (_querySnapshotStreams.length >= maxSnapshots) {
       _querySnapshotStreams = [..._querySnapshotStreams]..removeLast();
@@ -124,5 +140,7 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
 
     _querySnapshotStreams = [snapStream, ..._querySnapshotStreams];
     _updateSubscription();
+
+    return completer.future;
   }
 }
