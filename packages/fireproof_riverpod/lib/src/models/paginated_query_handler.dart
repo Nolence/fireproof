@@ -4,10 +4,12 @@ import 'package:fireproof/fireproof.dart';
 import 'package:fireproof_riverpod/src/models/base_paginated_query_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'base_handler.dart';
+
 class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
   PaginatedQueryHandler({
     required Query<T> query,
-    required TestDoc<T> testDoc,
+    TestDoc<T> testDoc = BaseHandler.defaultTest,
     int maxSnapshots = 10,
     int limit = 10,
   }) : super(

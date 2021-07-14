@@ -4,10 +4,12 @@ import 'package:fireproof_riverpod/src/models/base_query_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/kt.dart';
 
+import 'base_handler.dart';
+
 class QueryHandler<T> extends BaseQueryHandler<T, Query<T>> {
   QueryHandler({
     required Query<T> query,
-    required TestDoc<T> testDoc,
+    TestDoc<T> testDoc = BaseHandler.defaultTest,
   }) : super(
           query: query,
           testDoc: testDoc,
