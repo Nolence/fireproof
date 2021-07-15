@@ -35,7 +35,7 @@ abstract class BasePaginatedQueryHandler<T, R extends Query<T>>
 
   final PaginatedQueryOnceNotifier<T, R> _paginatedQueryOnceNotifier;
 
-  late final paginatedQuery = StateNotifierProvider<
+  late final paginatedQuery = StateNotifierProvider.autoDispose<
       PaginatedQueryNotifier<T, Query<T>>,
       AsyncSnapshot<Iterable<QuerySnap<T>>>>(
     (ref) {
@@ -43,7 +43,7 @@ abstract class BasePaginatedQueryHandler<T, R extends Query<T>>
     },
   );
 
-  late final paginatedQueryOnce = StateNotifierProvider<
+  late final paginatedQueryOnce = StateNotifierProvider.autoDispose<
       PaginatedQueryOnceNotifier<T, Query<T>>,
       AsyncSnapshot<Iterable<QuerySnap<T>>>>(
     (ref) {

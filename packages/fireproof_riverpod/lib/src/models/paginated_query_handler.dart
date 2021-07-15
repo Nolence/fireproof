@@ -22,7 +22,8 @@ class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
   /// This checks the cache of [PaginatedQueryOnceNotifier] to see
   /// if there is a cached result. If there is, it returns that result.
   @override
-  late final docSnapshot = FutureProvider.autoDispose.family<Doc<T>?, String>(
+  late final AutoDisposeFutureProviderFamily<Doc<T>?, String> docSnapshot =
+      FutureProvider.autoDispose.family<Doc<T>?, String>(
     (ref, id) async {
       final asyncSnapshot = ref.watch(paginatedQueryOnce);
 
@@ -36,7 +37,8 @@ class PaginatedQueryHandler<T> extends BasePaginatedQueryHandler<T, Query<T>> {
   /// This checks the cache of [PaginatedQueryNotifier] to see
   /// if there is a cached result. If there is, it returns that result.
   @override
-  late final docSnapshots = StreamProvider.autoDispose.family<Doc<T>?, String>(
+  late final AutoDisposeStreamProviderFamily<Doc<T>?, String> docSnapshots =
+      StreamProvider.autoDispose.family<Doc<T>?, String>(
     (ref, id) async* {
       final asyncSnapshot = ref.watch(paginatedQuery);
 
