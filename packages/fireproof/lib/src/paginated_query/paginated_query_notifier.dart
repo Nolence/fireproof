@@ -82,7 +82,9 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     _lastDocumentSubscription = stream.listen(
       (QuerySnapshot<T> snapshot) {
         completer.complete();
-        _lastDocumentSnapshot = snapshot.docs.last;
+        if (snapshot.docs.isNotEmpty) {
+          _lastDocumentSnapshot = snapshot.docs.last;
+        }
       },
       onError: (error, stackTrace) {
         return completer.completeError(error, stackTrace);
@@ -123,7 +125,9 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     _lastDocumentSubscription = stream.listen(
       (QuerySnapshot<T> snapshot) {
         completer.complete();
-        _lastDocumentSnapshot = snapshot.docs.first;
+        if (snapshot.docs.isNotEmpty) {
+          _lastDocumentSnapshot = snapshot.docs.first;
+        }
       },
       onError: (error, stackTrace) {
         return completer.completeError(error, stackTrace);

@@ -51,7 +51,10 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
         querySnapshots = [...querySnapshots].sublist(1);
       }
 
-      _lastDocumentSnapshot = querySnapshot.docs.last;
+      if (querySnapshot.docs.isNotEmpty) {
+        _lastDocumentSnapshot = querySnapshot.docs.last;
+      }
+
       state = AsyncSnapshot.withData(
         ConnectionState.done,
         querySnapshots,
@@ -89,7 +92,10 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
         querySnapshots = [...querySnapshots]..removeLast();
       }
 
-      _lastDocumentSnapshot = querySnapshot.docs.last;
+      if (querySnapshot.docs.isNotEmpty) {
+        _lastDocumentSnapshot = querySnapshot.docs.last;
+      }
+
       state = AsyncSnapshot.withData(
         ConnectionState.done,
         querySnapshots,
