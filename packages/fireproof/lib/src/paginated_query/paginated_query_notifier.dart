@@ -64,8 +64,8 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
   }
 
   @override
-  Future<void> nextPage() {
-    final completer = Completer();
+  Future<bool> nextPage() {
+    final completer = Completer<bool>();
     if (state.connectionState == ConnectionState.waiting) {
       assert(false, 'We should not fetch more pages while loading.');
     }
@@ -81,8 +81,10 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     _lastDocumentSubscription?.cancel();
     _lastDocumentSubscription = stream.listen(
       (QuerySnapshot<T> snapshot) {
-        completer.complete();
-        if (snapshot.docs.isNotEmpty) {
+        final isNotEmpty = snapshot.docs.isNotEmpty;
+
+        completer.complete(isNotEmpty);
+        if (isNotEmpty) {
           _lastDocumentSnapshot = snapshot.docs.last;
         }
       },
@@ -106,8 +108,8 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
   }
 
   @override
-  Future<void> previousPage() {
-    final completer = Completer();
+  Future<bool> previousPage() {
+    final completer = Completer<bool>();
     if (state.connectionState == ConnectionState.waiting) {
       assert(false, 'We should not fetch more pages while loading.');
     }
@@ -124,8 +126,10 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     // TODO: Is this really .first
     _lastDocumentSubscription = stream.listen(
       (QuerySnapshot<T> snapshot) {
-        completer.complete();
-        if (snapshot.docs.isNotEmpty) {
+        final isNotEmpty = snapshot.docs.isNotEmpty;
+
+        completer.complete(isNotEmpty);
+        if (isNotEmpty) {
           _lastDocumentSnapshot = snapshot.docs.first;
         }
       },

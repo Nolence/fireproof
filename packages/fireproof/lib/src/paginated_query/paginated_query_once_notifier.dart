@@ -22,7 +22,7 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
   DocumentSnapshot<T>? _lastDocumentSnapshot;
 
   @override
-  Future<void> nextPage() async {
+  Future<bool> nextPage() async {
     if (state.connectionState == ConnectionState.waiting) {
       assert(false, 'We should not fetch more pages while loading.');
     }
@@ -60,10 +60,12 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
         querySnapshots,
       );
     }
+
+    return querySnapshot.docs.isNotEmpty;
   }
 
   @override
-  Future<void> previousPage() async {
+  Future<bool> previousPage() async {
     if (state.connectionState == ConnectionState.waiting) {
       assert(false, 'We should not fetch more pages while loading.');
     }
@@ -101,5 +103,7 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
         querySnapshots,
       );
     }
+
+    return querySnapshot.docs.isNotEmpty;
   }
 }
