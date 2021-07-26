@@ -73,7 +73,7 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     Query<T> _query = query.limit(limit);
     final lastDocumentSnapshot = _lastDocumentSnapshot;
     if (lastDocumentSnapshot != null) {
-      _query = query.startAfterDocument(lastDocumentSnapshot);
+      _query = _query.startAfterDocument(lastDocumentSnapshot);
     }
 
     final stream = _query.snapshots();
@@ -117,7 +117,7 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     Query<T> _query = query.limitToLast(limit);
     final lastDocumentSnapshot = _lastDocumentSnapshot;
     if (lastDocumentSnapshot != null) {
-      _query = query.endBeforeDocument(lastDocumentSnapshot);
+      _query = _query.endBeforeDocument(lastDocumentSnapshot);
     }
 
     final stream = _query.snapshots();
