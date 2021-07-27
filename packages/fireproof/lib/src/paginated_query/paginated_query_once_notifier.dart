@@ -40,7 +40,7 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
     if (mounted) {
       final data = state.data;
       var querySnapshots = data == null ? <QuerySnap<T>>[] : [...data];
-      final querySnap = QuerySnap.fromSnapshot(
+      final querySnap = QuerySnap.fromQuerySnapshot(
         snapshot: querySnapshot,
         testDoc: testDoc,
       );
@@ -83,7 +83,7 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
     if (mounted) {
       final data = state.data;
       var querySnapshots = data == null ? <QuerySnap<T>>[] : [...data];
-      final querySnap = QuerySnap.fromSnapshot(
+      final querySnap = QuerySnap.fromQuerySnapshot(
         snapshot: querySnapshot,
         testDoc: testDoc,
       );

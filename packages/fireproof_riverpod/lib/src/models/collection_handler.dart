@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/kt.dart';
 
-// TODO: testDoc should be optional
 @immutable
 class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
   CollectionHandler({
@@ -61,24 +60,32 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
   );
 
   @override
-  late final docsInSnapshot =
-      FutureProvider.autoDispose.family<Iterable<Doc<T>>, KtList<String>>(
+  late final snapshotIn =
+      FutureProvider.autoDispose.family<QuerySnap<T>, KtList<String>>(
     (ref, ids) async {
-      throw UnimplementedError();
-      // final querySnapshot = await ref.watch(snapshot.future);
+      final _snapshot = await ref.watch(snapshot.future);
 
-      // querySnapshot.docs.singleWhere((doc) => doc.id == id);
+      return QuerySnap.fromQuerySnap(
+        snapshot: _snapshot,
+        testDoc: (doc) {
+          return ids.contains(doc.id);
+        },
+      );
     },
   );
 
   @override
-  late final docsInSnapshots =
-      StreamProvider.autoDispose.family<Iterable<Doc<T>>, KtList<String>>(
+  late final snapshotsIn =
+      StreamProvider.autoDispose.family<QuerySnap<T>, KtList<String>>(
     (ref, ids) async* {
-      throw UnimplementedError();
-      // await for (final querySnapshot in ref.watch(snapshots.stream)) {
-      //   yield querySnapshot.docs.singleWhere((doc) => doc.id == id);
-      // }
+      await for (final snapshot in ref.watch(snapshots.stream)) {
+        yield QuerySnap.fromQuerySnap(
+          snapshot: snapshot,
+          testDoc: (doc) {
+            return ids.contains(doc.id);
+          },
+        );
+      }
     },
   );
 }

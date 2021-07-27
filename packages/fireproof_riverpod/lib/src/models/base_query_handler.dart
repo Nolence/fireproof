@@ -23,7 +23,7 @@ abstract class BaseQueryHandler<T, R extends Query<T>>
     (ref) async {
       final _snapshot = await query.get();
 
-      return QuerySnap.fromSnapshot(
+      return QuerySnap.fromQuerySnapshot(
         snapshot: _snapshot,
         testDoc: testDoc,
       );
@@ -33,14 +33,13 @@ abstract class BaseQueryHandler<T, R extends Query<T>>
   late final snapshots = StreamProvider.autoDispose<QuerySnap<T>>((ref) {
     return query.snapshots().map(
       (_snapshot) {
-        return QuerySnap.fromSnapshot(snapshot: _snapshot, testDoc: testDoc);
+        return QuerySnap.fromQuerySnapshot(
+            snapshot: _snapshot, testDoc: testDoc);
       },
     );
   });
 
-  AutoDisposeFutureProviderFamily<Iterable<Doc<T>>, KtList<String>>
-      get docsInSnapshot;
+  AutoDisposeFutureProviderFamily<QuerySnap<T>, KtList<String>> get snapshotIn;
 
-  AutoDisposeStreamProviderFamily<Iterable<Doc<T>>, KtList<String>>
-      get docsInSnapshots;
+  AutoDisposeStreamProviderFamily<QuerySnap<T>, KtList<String>> get snapshotsIn;
 }

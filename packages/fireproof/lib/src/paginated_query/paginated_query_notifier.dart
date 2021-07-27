@@ -98,7 +98,10 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     }
 
     final snapStream = stream.map((snapshot) {
-      return QuerySnap.fromSnapshot(snapshot: snapshot, testDoc: testDoc);
+      return QuerySnap.fromQuerySnapshot(
+        snapshot: snapshot,
+        testDoc: testDoc,
+      );
     });
 
     _querySnapshotStreams = [..._querySnapshotStreams, snapStream];
@@ -143,7 +146,10 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
     }
 
     final snapStream = stream.map((snapshot) {
-      return QuerySnap.fromSnapshot(snapshot: snapshot, testDoc: testDoc);
+      return QuerySnap.fromQuerySnapshot(
+        snapshot: snapshot,
+        testDoc: testDoc,
+      );
     });
 
     _querySnapshotStreams = [snapStream, ..._querySnapshotStreams];
