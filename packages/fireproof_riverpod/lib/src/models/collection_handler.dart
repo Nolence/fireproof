@@ -78,9 +78,12 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
   late final snapshotsIn =
       StreamProvider.autoDispose.family<QuerySnap<T>, KtList<String>>(
     (ref, ids) async* {
-      await for (final snapshot in ref.watch(snapshots.stream)) {
+      final asyncValue = ref.watch(snapshots);
+      final snapshot = asyncValue.data;
+
+      if (snapshot != null) {
         yield QuerySnap.fromQuerySnap(
-          snapshot: snapshot,
+          snapshot: snapshot.value,
           testDoc: (doc) {
             return ids.contains(doc.id);
           },

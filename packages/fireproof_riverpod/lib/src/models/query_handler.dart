@@ -31,8 +31,11 @@ class QueryHandler<T> extends BaseQueryHandler<T, Query<T>> {
   late final AutoDisposeStreamProviderFamily<Doc<T>, String> docSnapshots =
       StreamProvider.autoDispose.family<Doc<T>, String>(
     (ref, id) async* {
-      await for (final querySnapshot in ref.watch(snapshots.stream)) {
-        yield querySnapshot.docs.singleWhere((doc) => doc.id == id);
+      final asyncValue = ref.watch(snapshots);
+      final data = asyncValue.data;
+
+      if (data != null) {
+        yield data.value.docs.singleWhere((doc) => doc.id == id);
       }
     },
   );
@@ -56,9 +59,12 @@ class QueryHandler<T> extends BaseQueryHandler<T, Query<T>> {
   late final snapshotsIn =
       StreamProvider.autoDispose.family<QuerySnap<T>, KtList<String>>(
     (ref, ids) async* {
-      await for (final snapshot in ref.watch(snapshots.stream)) {
+      final asyncValue = ref.watch(snapshots);
+      final snapshot = asyncValue.data;
+
+      if (snapshot != null) {
         yield QuerySnap.fromQuerySnap(
-          snapshot: snapshot,
+          snapshot: snapshot.value,
           testDoc: (doc) {
             return ids.contains(doc.id);
           },
