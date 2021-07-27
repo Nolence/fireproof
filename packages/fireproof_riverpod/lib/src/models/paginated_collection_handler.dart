@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:fireproof/fireproof.dart';
+import 'package:fireproof_riverpod/src/models/base_handler.dart';
 import 'package:fireproof_riverpod/src/models/base_paginated_query_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'base_handler.dart';
 
 class PaginatedCollectionHandler<T>
     extends BasePaginatedQueryHandler<T, CollectionReference<T>> {
@@ -53,9 +52,7 @@ class PaginatedCollectionHandler<T>
         yield previousDoc;
       }
 
-      yield* query.doc(id).snapshots().map((documentSnapshot) {
-        return MaybeDoc.fromSnapshot(documentSnapshot);
-      });
+      yield* query.doc(id).snapshots().map(MaybeDoc.fromSnapshot);
     },
   );
 }

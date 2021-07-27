@@ -10,16 +10,16 @@ extension QuerySnaps<T> on Iterable<QuerySnap<T>> {
 
 extension ToDocsExtension<T> on Iterable<DocumentSnapshot<T>> {
   Iterable<Doc<T?>> get toDocs {
-    return map((doc) => MaybeDoc.fromSnapshot(doc));
+    return map(MaybeDoc.fromSnapshot);
   }
 
   Iterable<Doc<T>> get toDocsForce {
-    return map((doc) => MaybeDoc.fromSnapshotForce(doc));
+    return map(MaybeDoc.fromSnapshotForce);
   }
 }
 
 extension ToQueryDocsExtension<T> on Iterable<QueryDocumentSnapshot<T>> {
   Iterable<Doc<T>> get toDocs {
-    return map((doc) => MaybeDoc.fromQuerySnapshot(doc));
+    return map(MaybeDoc.fromQuerySnapshot);
   }
 }

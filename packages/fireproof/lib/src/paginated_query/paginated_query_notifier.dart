@@ -45,8 +45,15 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
   }
 
   void _updateSubscription() {
-    _subscription?.cancel();
-    state = state.inState(ConnectionState.waiting);
+    final subscription = _subscription;
+
+    if (subscription == null) {
+      // We only go into waiting state if we're actually subscribed.
+      state = state.inState(ConnectionState.waiting);
+    } else {
+      subscription.cancel();
+    }
+
     _subscription = _querySnapshotsStream.listen(
       _handleStateChanges,
       onError: (Object error, StackTrace stackTrace) {
@@ -88,9 +95,7 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
           _lastDocumentSnapshot = snapshot.docs.last;
         }
       },
-      onError: (error, stackTrace) {
-        return completer.completeError(error, stackTrace);
-      },
+      onError: completer.completeError,
     );
 
     if (_querySnapshotStreams.length >= maxSnapshots) {
@@ -136,9 +141,7 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
           _lastDocumentSnapshot = snapshot.docs.first;
         }
       },
-      onError: (error, stackTrace) {
-        return completer.completeError(error, stackTrace);
-      },
+      onError: completer.completeError,
     );
 
     if (_querySnapshotStreams.length >= maxSnapshots) {

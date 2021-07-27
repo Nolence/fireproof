@@ -30,7 +30,8 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
   }
 
   static Doc<R> fromSnapshotForce<R extends Object?>(
-      DocumentSnapshot<R> snapshot) {
+    DocumentSnapshot<R> snapshot,
+  ) {
     assert(snapshot.exists);
 
     return Doc<R>(
@@ -40,7 +41,8 @@ class MaybeDoc<T extends Object?> with _$MaybeDoc<T> {
   }
 
   static Doc<R> fromQuerySnapshot<R extends Object?>(
-      QueryDocumentSnapshot<R> snapshot) {
+    QueryDocumentSnapshot<R> snapshot,
+  ) {
     return Doc<R>(
       data: snapshot.data,
       reference: snapshot.reference,

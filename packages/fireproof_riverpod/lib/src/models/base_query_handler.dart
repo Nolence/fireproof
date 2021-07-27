@@ -34,7 +34,9 @@ abstract class BaseQueryHandler<T, R extends Query<T>>
     return query.snapshots().map(
       (_snapshot) {
         return QuerySnap.fromQuerySnapshot(
-            snapshot: _snapshot, testDoc: testDoc);
+          snapshot: _snapshot,
+          testDoc: testDoc,
+        );
       },
     );
   });

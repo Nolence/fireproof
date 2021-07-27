@@ -27,7 +27,9 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
       assert(false, 'We should not fetch more pages while loading.');
     }
 
-    state = state.inState(ConnectionState.waiting);
+    if (!state.hasData) {
+      state = state.inState(ConnectionState.waiting);
+    }
 
     Query<T> _query = query.limit(limit);
     final lastDocumentSnapshot = _lastDocumentSnapshot;
@@ -70,7 +72,9 @@ class PaginatedQueryOnceNotifier<T, R extends Query<T>>
       assert(false, 'We should not fetch more pages while loading.');
     }
 
-    state = state.inState(ConnectionState.waiting);
+    if (!state.hasData) {
+      state = state.inState(ConnectionState.waiting);
+    }
 
     Query<T> _query = query.limitToLast(limit);
     final lastDocumentSnapshot = _lastDocumentSnapshot;

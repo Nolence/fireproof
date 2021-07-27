@@ -32,9 +32,7 @@ class CollectionHandler<T> extends BaseQueryHandler<T, CollectionReference<T>> {
         yield _document;
       }
 
-      yield* query.doc(id).snapshots().map((documentSnapshot) {
-        return MaybeDoc.fromSnapshot(documentSnapshot);
-      });
+      yield* query.doc(id).snapshots().map(MaybeDoc.fromSnapshot);
     },
   );
 

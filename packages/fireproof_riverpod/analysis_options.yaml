@@ -1,4 +1,25 @@
 include: package:flutter_lints/flutter.yaml
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "lib/generated/**"
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+linter:
+  rules:
+    - parameter_assignments
+    - require_trailing_commas
+    - only_throw_errors
+    - always_use_package_imports
+    - avoid_dynamic_calls
+    - prefer_void_to_null
+    - always_declare_return_types
+    - avoid_classes_with_only_static_members
+    - unnecessary_lambdas
+    - unnecessary_const
+    - avoid_void_async
