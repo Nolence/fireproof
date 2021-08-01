@@ -1,0 +1,31 @@
+name: fireproof_riverpod_firestore
+description: A new Flutter package project.
+version: 0.0.1
+homepage:
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fireproof_firestore:
+    git:
+      url: https://github.com/Nolence/fireproof.git
+      path: ./packages/fireproof/packages/fireproof_firestore
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+  cloud_firestore: ^2.3.0
+  flutter_riverpod: ^1.0.0-dev.6
+  kt_dart: ^0.9.1
+
+dependency_overrides:
+  fireproof_firestore:
+    path: ../../../fireproof/packages/fireproof_firestore
+
+flutter:
