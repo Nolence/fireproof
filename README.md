@@ -25,3 +25,4 @@ TODO:
 (These were due to not thinking through the unnecessary dependencies this way would require)
 - [ ] Delete and archive fireproof
 - [ ] Delete and archive fireproof_rivperpod
+- [ ] Add example with setup instructions
