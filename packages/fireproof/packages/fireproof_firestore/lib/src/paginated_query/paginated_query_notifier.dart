@@ -91,6 +91,8 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
         final isNotEmpty = snapshot.docs.isNotEmpty;
 
         completer.complete(isNotEmpty);
+        _lastDocumentSubscription?.cancel();
+
         if (isNotEmpty) {
           _lastDocumentSnapshot = snapshot.docs.last;
         }
@@ -137,6 +139,8 @@ class PaginatedQueryNotifier<T, R extends Query<T>>
         final isNotEmpty = snapshot.docs.isNotEmpty;
 
         completer.complete(isNotEmpty);
+        _lastDocumentSubscription?.cancel();
+
         if (isNotEmpty) {
           _lastDocumentSnapshot = snapshot.docs.first;
         }
