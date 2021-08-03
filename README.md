@@ -15,9 +15,26 @@ Wraps the functionality of fireproof into easy to handle riverpod abstractions
 
 ## hooks_fireproof
 Provides `flutter_hooks` hooks for common scenerios around common firebase packages
-- [ ] hooks_fireproof_auth
-- [ ] hooks_fireproof_firestore
-- [ ] hooks_fireproof_storage (in progress)
+- [ ] [hooks_fireproof_auth](https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth)
+    <!-- - [ ] useAuth (likely returns an auth object no?) -->
+    - [ ] useAuthState
+    - [ ] useCreateUserWithEmailAndPassword
+    - [ ] useSignInWithEmailAndPassword
+- [ ] [hooks_fireproof_firestore](https://github.com/CSFrequency/react-firebase-hooks/tree/master/firestore)
+    - [ ] useCollection
+    - [ ] useCollectionOnce
+    - [ ] useCollectionData
+    - [ ] useCollectionDataOnce
+    - [ ] useDocument
+    - [ ] useDocumentOnce
+    - [ ] useDocumentData
+    - [ ] useDocumentDataOnce
+- [x] [hooks_fireproof_storage](https://github.com/CSFrequency/react-firebase-hooks/tree/master/storage)
+    <!-- useDownloadURL -->
+    - [x] useFile
+    - [x] useFiles
+    - [x] useStorageFile
+    - [x] useStorageFiles
 
 
 TODO:
