@@ -1,7 +1,7 @@
 library hooks_fireproof_storage;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export './src/file.dart';
+export './src/files.dart';
+export './src/models/commit_result.dart';
+export './src/storage_file.dart';
+export './src/storage_files.dart';
