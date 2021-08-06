@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-AsyncSnapshot<DocumentSnapshot> useDocument<T>({
-  required DocumentReference document,
+AsyncSnapshot<DocumentSnapshot<T>> useDocument<T>({
+  required DocumentReference<T> document,
   required bool listen,
   bool preserveState = false,
 
