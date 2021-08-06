@@ -21,14 +21,11 @@ Provides `flutter_hooks` hooks for common scenerios around common firebase packa
     - [ ] useCreateUserWithEmailAndPassword
     - [ ] useSignInWithEmailAndPassword
 - [ ] [hooks_fireproof_firestore](https://github.com/CSFrequency/react-firebase-hooks/tree/master/firestore)
-    - [ ] useCollection
-    - [ ] useCollectionOnce
-    - [ ] useCollectionData
-    - [ ] useCollectionDataOnce
-    - [ ] useDocument
-    - [ ] useDocumentOnce
-    - [ ] useDocumentData
-    - [ ] useDocumentDataOnce
+    - [x] useQuery
+    - [x] useCollection
+    - [x] useDocument
+    - [ ] usePaginatedQuery
+    - [ ] usePaginatedCollection
 - [x] [hooks_fireproof_storage](https://github.com/CSFrequency/react-firebase-hooks/tree/master/storage)
     <!-- useDownloadURL -->
     - [x] useFile

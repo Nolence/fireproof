@@ -1,7 +1,6 @@
 library hooks_fireproof_firestore;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export './src/collection.dart';
+export './src/document.dart';
+export './src/paginated_query.dart';
+export './src/query.dart';
