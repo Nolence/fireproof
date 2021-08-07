@@ -15,14 +15,22 @@ AsyncSnapshot<QuerySnapshot<T>> useCollection<T>({
 }) {
   if (listen) {
     final stream = useStream(
-      collection.snapshots(includeMetadataChanges: includeMetadataChanges),
+      useMemoized(
+        () => collection.snapshots(
+          includeMetadataChanges: includeMetadataChanges,
+        ),
+        [collection, includeMetadataChanges],
+      ),
       preserveState: preserveState,
     );
 
     return stream;
   } else {
     final future = useFuture(
-      collection.get(getOptions),
+      useMemoized(
+        () => collection.get(getOptions),
+        [collection, getOptions],
+      ),
       preserveState: preserveState,
     );
 

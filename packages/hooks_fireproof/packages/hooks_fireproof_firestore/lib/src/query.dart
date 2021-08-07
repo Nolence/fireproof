@@ -19,17 +19,19 @@ AsyncSnapshot<QuerySnapshot<T>> useQuery<T>({
         () => query.snapshots(
           includeMetadataChanges: includeMetadataChanges,
         ),
+        [query, includeMetadataChanges],
       ),
       preserveState: preserveState,
     );
 
     return stream;
   } else {
-    final future = useMemoized(
-      () => useFuture(
-        query.get(getOptions),
-        preserveState: preserveState,
+    final future = useFuture(
+      useMemoized(
+        () => query.get(getOptions),
+        [query, getOptions],
       ),
+      preserveState: preserveState,
     );
 
     return future;

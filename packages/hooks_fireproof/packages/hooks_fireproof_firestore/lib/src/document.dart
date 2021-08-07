@@ -15,14 +15,19 @@ AsyncSnapshot<DocumentSnapshot<T>> useDocument<T>({
 }) {
   if (listen) {
     final stream = useStream(
-      document.snapshots(includeMetadataChanges: includeMetadataChanges),
+      useMemoized(
+        () => document.snapshots(
+          includeMetadataChanges: includeMetadataChanges,
+        ),
+        [document, includeMetadataChanges],
+      ),
       preserveState: preserveState,
     );
 
     return stream;
   } else {
     final future = useFuture(
-      document.get(getOptions),
+      useMemoized(() => document.get(getOptions), [document, getOptions]),
       preserveState: preserveState,
     );
 
