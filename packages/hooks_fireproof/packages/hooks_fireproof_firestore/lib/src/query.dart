@@ -15,15 +15,21 @@ AsyncSnapshot<QuerySnapshot<T>> useQuery<T>({
 }) {
   if (listen) {
     final stream = useStream(
-      query.snapshots(includeMetadataChanges: includeMetadataChanges),
+      useMemoized(
+        () => query.snapshots(
+          includeMetadataChanges: includeMetadataChanges,
+        ),
+      ),
       preserveState: preserveState,
     );
 
     return stream;
   } else {
-    final future = useFuture(
-      query.get(getOptions),
-      preserveState: preserveState,
+    final future = useMemoized(
+      () => useFuture(
+        query.get(getOptions),
+        preserveState: preserveState,
+      ),
     );
 
     return future;
