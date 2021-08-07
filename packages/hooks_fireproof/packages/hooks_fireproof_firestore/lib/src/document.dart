@@ -19,7 +19,7 @@ AsyncSnapshot<DocumentSnapshot<T>> useDocument<T>({
         () => document.snapshots(
           includeMetadataChanges: includeMetadataChanges,
         ),
-        [document, includeMetadataChanges],
+        [includeMetadataChanges],
       ),
       preserveState: preserveState,
     );
@@ -27,7 +27,7 @@ AsyncSnapshot<DocumentSnapshot<T>> useDocument<T>({
     return stream;
   } else {
     final future = useFuture(
-      useMemoized(() => document.get(getOptions), [document, getOptions]),
+      useMemoized(() => document.get(getOptions), [getOptions]),
       preserveState: preserveState,
     );
 

@@ -19,7 +19,7 @@ AsyncSnapshot<QuerySnapshot<T>> useCollection<T>({
         () => collection.snapshots(
           includeMetadataChanges: includeMetadataChanges,
         ),
-        [collection, includeMetadataChanges],
+        [includeMetadataChanges],
       ),
       preserveState: preserveState,
     );
@@ -29,7 +29,7 @@ AsyncSnapshot<QuerySnapshot<T>> useCollection<T>({
     final future = useFuture(
       useMemoized(
         () => collection.get(getOptions),
-        [collection, getOptions],
+        [getOptions],
       ),
       preserveState: preserveState,
     );
